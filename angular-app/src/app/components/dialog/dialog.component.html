@@ -1,0 +1,27 @@
+<div class="dialog" [ngClass]="{ 'm-show': data }">
+  <div class="dialog__content">
+    <button class="dialog__close" type="button" (click)="close()"><i class="fa fa-times fa-2"></i></button>
+    <div *ngIf="data">
+      <h1>Событие № {{ data.id }}</h1>
+      <p>ФИО: {{ data.username }}</p>
+      <p>Подразделение: {{ data.unit }}</p>
+      <div>
+        <p>Список событий:</p>
+        <ul>
+          <li *ngFor="let item of data.list.split(',')">
+            <p>{{ item }}</p>
+          </li>
+        </ul>
+      </div>
+      <p>Тема: {{ data.theme }}</p>
+      <div *ngIf="data.message">
+        Содержание:
+        <p>{{ data.message }}</p>
+      </div>
+      <div *ngIf="data.file" class="dialog__file">
+        Вложение:
+        <img [src]="data.file | srcSafe">
+      </div>
+    </div>
+  </div>
+</div>

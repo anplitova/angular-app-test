@@ -1,0 +1,98 @@
+<form class="form" [formGroup]="addForm" (ngSubmit)="onSubmit()" [ngClass]="{ 'm-load': submitted }">
+  <div class="search">
+    <label class="search__label" for="time">Найти событие</label>
+    <input id="search" type="search" class="form__control search__input" (input)="onInputSearch($event)">
+    <ul class="search__list" [hidden]="!list || dialogShow">
+      <li class="search__item" *ngFor="let item of list" [attr.data-event-id]="item.id" (click)="searchEvent(item.id)">
+        <p>ФИО: {{ item.username }} ({{ item.unit }})</p>
+      </li>
+    </ul>
+  </div>
+  <div class="form__row">
+    <div class="form__col">
+      <div class="form__label-block">
+        <label class="form__label" for="username">ФИО</label>
+      </div>
+      <div class="form__control-block">
+        <input id="username" type="text" formControlName="username" class="form__control form__input" [ngClass]="{ 'm-error': submitted && f.username.errors }">
+        <div *ngIf="submitted && f.username.errors" class="form__error">
+          <p *ngIf="f.username.errors.required"><i class="fa fa-exclamation-circle"></i> Обязательное поле</p>
+        </div>
+      </div>
+    </div>
+    <div class="form__col">
+      <div class="form__label-block">
+        <label class="form__label" for="unit">Подразделение</label>
+      </div>
+      <div class="form__control-block">
+        <input id="unit" type="text" formControlName="unit" class="form__control form__input" [ngClass]="{ 'm-error': submitted && f.unit.errors }">
+        <div *ngIf="submitted && f.unit.errors" class="form__error">
+          <p *ngIf="f.unit.errors.required"><i class="fa fa-exclamation-circle"></i> Обязательное поле</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form__row">
+    <div class="form__col">
+      <div class="form__label-block">
+        <label class="form__label" for="list">Список событий</label>
+      </div>
+      <div class="form__control-block">
+        <select id="list" formControlName="list" class="form__control form__select" [ngClass]="{ 'm-error': submitted && f.list.errors }" multiple>
+          <option value=""></option>
+          <option value="event-1">Событие 1</option>
+          <option value="event-2">Событие 2</option>
+          <option value="event-3">Событие 3</option>
+          <option value="event-4">Событие 4</option>
+          <option value="event-5">Событие 5</option>
+        </select>
+        <div *ngIf="submitted && f.list.errors" class="form__error">
+          <p *ngIf="f.list.errors.required"><i class="fa fa-exclamation-circle"></i> Обязательное поле</p>
+        </div>
+      </div>
+    </div>
+    <div class="form__col">
+      <div class="form__label-block">
+        <label class="form__label" for="message">Содержание</label>
+      </div>
+      <div class="form__control-block">
+        <textarea id="message" type="text" formControlName="message" class="form__control form__textarea" [ngClass]="{ 'm-error': submitted && f.message.errors }"></textarea>
+        <div *ngIf="submitted" class="form__error">
+          <p *ngIf="errorMessage"><i class="fa fa-exclamation-circle"></i> Содержание или Вложение обязательные поля</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form__row">
+    <div class="form__col">
+      <div class="form__label-block">
+        <label class="form__label" for="theme">Тема</label>
+      </div>
+      <div class="form__control-block">
+        <input id="theme" type="text" formControlName="theme" class="form__control form__input" [ngClass]="{ 'm-error': submitted && f.theme.errors }" value="{{ date }}">
+        <div *ngIf="submitted && f.theme.errors" class="form__error">
+          <p *ngIf="f.theme.errors.required"><i class="fa fa-exclamation-circle"></i> Обязательное поле</p>
+        </div>
+      </div>
+    </div>
+    <div class="form__col">
+      <div class="form__label-block">
+        <label class="form__label">Вложение</label>
+      </div>
+      <div class="form__control-block">
+        <input class="form__file" id="file" type="file" (change)="onFileChange($event)" accept="image/*">
+        <label class="form__label-file" for="file">
+          <i class="fa fa-upload"></i>
+          <span *ngIf="!file"> Загрузить</span>
+          <span *ngIf="file && file.name"> {{ file.name }}</span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form__buttons">
+    <button class="form__button form__button--reset" type="reset"><i class="fa fa-undo"></i> Очистить</button>
+    <button class="form__button form__button--submit" type="submit"><i class="fa fa-check"></i> Отправить</button>
+  </div>
+</form>
+
+<app-dialog [data]="dialogData"></app-dialog>
